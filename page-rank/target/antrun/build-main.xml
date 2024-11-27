@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="maven-antrun-" default="main">
+  <target name="main">
+    <delete file="C:\Users\Justi/tmp/cs549/hadoop-test/pagerank.jar" />
+    <copy file="C:\Users\Justi\OneDrive\Desktop\Code\Assignment5-Code\Assignment5-Code\page-rank\target/PageRank-1.0.0.jar" tofile="C:\Users\Justi/tmp/cs549/hadoop-test/pagerank.jar" />
+  </target>
+</project>
