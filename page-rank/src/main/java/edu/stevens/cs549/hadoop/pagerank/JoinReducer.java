@@ -11,6 +11,7 @@ public class JoinReducer extends Reducer<TextPair, Text, Text, Text> {
 		/* 
 		 * TextPair ensures that we have values with tag "0" first, followed by tag "1"
 		 * So we know that first value is the name and second value is the rank
+		 * Not sure what we do with this key
 		 */
 		String k = key.toString(); // Converts the key to a String
 		
@@ -32,21 +33,19 @@ public class JoinReducer extends Reducer<TextPair, Text, Text, Text> {
 		// Ask Duggan what to do here
 
 		// For now, we're treating this as a normal iterable but reduce only sends one output
+		int i = 0;
 		for (Text value : values)
 		{
-			String[] valueSplit = value.toString().split("\t");
-
-			// Not sure what to do here, but I'll just say that if the valueSplit has vertexName and vertexRank,
-			// appropriately return that
-
-			if (valueSplit.length == 2)
+			if (i == 0)
 			{
-				vertexName = valueSplit[0].trim();
-				vertexRank = valueSplit[1].trim();
-
-				// Only one emit so
-				break;
+				vertexName = value.toString();
 			}
+			else if (i == 1)
+			{
+				vertexRank = value.toString();
+			}
+
+			i++;
 		}
 
 		if (vertexName != null && vertexRank != null)

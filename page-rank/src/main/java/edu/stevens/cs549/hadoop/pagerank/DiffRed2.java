@@ -30,6 +30,7 @@ public class DiffRed2 extends Reducer<Text, Text, Text, Text> {
 		}
 
 		// TODO: Output
-		context.write(new Text(diff_max + ""), null);
+		// context.write(new Text(diff_max + ""), null);
+		context.write(new Text(), new Text(diff_max + ""));
 	}
 }

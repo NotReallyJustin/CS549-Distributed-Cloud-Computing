@@ -38,6 +38,6 @@ public class DiffRed1 extends Reducer<Text, Text, Text, Text> {
 		double absDiff = Math.abs(ranks[0] - ranks[1]);
 
 		// TODO: Output
-		context.write(new Text(Double.toString(absDiff)), null);
+		context.write(key, new Text(Double.toString(absDiff)));
 	}
 }

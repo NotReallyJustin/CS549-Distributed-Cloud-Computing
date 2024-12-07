@@ -1,0 +1,11 @@
+hadoop fs -mkdir /users
+hadoop fs -mkdir /users/Hadoop
+hadoop fs -mkdir input
+hadoop fs -put ___ input
+hadoop fs -mkdir names
+hadoop fs -put ___ names
+
+hadoop jar pagerank.jar composite input output inter1 inter2 names diffdir 5
+
+http://s3.amazonaws.com/cs549-stevens/links-simple-sorted.tgz
+http://s3.amazonaws.com/cs549-stevens/page-names.tgz

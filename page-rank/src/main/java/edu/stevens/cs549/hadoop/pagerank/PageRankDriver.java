@@ -45,7 +45,8 @@ public class PageRankDriver {
 				iter(args[1], args[2], Integer.parseInt(args[3]));
 			} else if (job.equals("finish")) {
 				finish(args[1], args[2], Integer.parseInt(args[3]));
-			} else // In case the function name doesn't match up
+			}
+			else // In case the function name doesn't match up
 			{
 				System.err
 						.println("Please check the name of the function you wish to call and try again");
@@ -80,7 +81,13 @@ public class PageRankDriver {
 				System.err
 						.println("Please check the name of the function you wish to call and try again");
 			}
-		} else {
+		} else if (args.length == 2)
+		{	// Justin debugging script to summarize
+			if (job.equals("summarize")) {
+				summarizeResult(args[1]);
+			}
+		}
+		else {
 			System.err
 					.println("Incorrect Usage \n Correct format: <function name><input><output><#reducers> \n Or \n <function name><input><output><diff><#reducers>"
 							+ "\n Or \n <function name><input><output><interim1><interim2><diff><#reducers>");
@@ -313,19 +320,21 @@ public class PageRankDriver {
 		{
 			// TODO: Modify this to output (vertex name, page rank) pairs instead of (vertex id, page rank)
 
-			deleteDirectory(interim2); // deletes other directory
+			deleteDirectory(interim1); // deletes other directory
 			counter++;
 
-			finish(interim1, output, reducers);
+			join(interim2, namesfile, "join_stdout", reducers);
+			finish("join_stdout", output, reducers);
 			summarizeResult(output);
 		} else // for even i, interim1 is the input directory
 		{
 			// TODO: Modify this to output (vertex name, page rank) pairs instead of (vertex id, page rank)
 
-			deleteDirectory(interim1); // Deletes other directory
+			deleteDirectory(interim2); // Deletes other directory
 			counter++;
 
-			finish(interim2, output, reducers);
+			join(interim1, namesfile, "join_stdout", reducers);
+			finish("join_stdout", output, reducers);
 			summarizeResult(output);
 		}
 		System.out.println();
@@ -341,7 +350,7 @@ public class PageRankDriver {
 		Path finpath = new Path(path); // Creates new Path
 		Configuration conf = new Configuration();
 		FileSystem fs = FileSystem.get(URI.create(path), conf);
-		HashMap<Long, Double> values = new HashMap<Long, Double>();
+		HashMap<String, Double> values = new HashMap<String, Double>();
 		// HashMap to store Node, Rank Pairs
 		int size = 0;
 
@@ -359,7 +368,8 @@ public class PageRankDriver {
 						if (diffcontent != null) // Adds new value as long as value exists
 						{
 							String[] parts = diffcontent.split("\t");
-							long node = Long.parseLong(parts[0]);
+							// long node = Long.parseLong(parts[0]);
+							String node = parts[0];
 							double rank = Double.parseDouble(parts[1]);
 							values.put(node, rank);
 							i++;
@@ -369,10 +379,10 @@ public class PageRankDriver {
 					d.close();
 				}
 			}
-			Long[] nodes = new Long[size];
+			String[] nodes = new String[size];
 			Double[] ranks = new Double[size];
 			int j = 0;
-			for (Map.Entry<Long, Double> entry : values.entrySet())
+			for (Map.Entry<String, Double> entry : values.entrySet())
 				/*
 				 *  Iterates over set and stores values in arrays
 				 */
@@ -391,7 +401,7 @@ public class PageRankDriver {
 						ranks[i] = ranks[k];
 						ranks[k] = temp;
 
-						Long temps = nodes[i]; // swaps
+						String temps = nodes[i]; // swaps
 						nodes[i] = nodes[k];
 						nodes[k] = temps;
 					}

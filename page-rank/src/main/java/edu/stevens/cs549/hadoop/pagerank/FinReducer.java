@@ -34,7 +34,7 @@ public class FinReducer extends Reducer<DoubleWritable, Text, Text, Text> {
 
 		for (Text value : values)
 		{
-			context.write(value, new Text(key.toString()));
+			context.write(new Text(value.toString()), new Text("" + (-1 * key.get())));
 		}
 	}
 }

@@ -23,15 +23,15 @@ public class FinMapper extends Mapper<LongWritable, Text, DoubleWritable, Text> 
 		// output key: -rank (to sort in reverse order)
 		// Output vertex: Vertex
 
-		String[] vertexRankSplit = sections[0].split(";");
-		String vertex = vertexRankSplit[0];
-		String rank = vertexRankSplit[1];
-		int negativeRank = -1 * Integer.parseInt(rank);
+		if (sections.length > 2)
+		{
+			throw new IOException("Incorrect data format");
+		}
+		if (sections.length != 2) {
+			return;
+		}
 
-		// TODO: Write
-		// IDK why but IntelliJ is telling me to make this a DoubleWritable type
-		// It won't let me do string conversion either
-		context.write(new DoubleWritable(negativeRank), new Text(vertex));
+		context.write(new DoubleWritable(-1 * Double.parseDouble(sections[1])), new Text(sections[0]));
 	}
 
 }
